@@ -1,4 +1,4 @@
-package fr.zekoyu.magneticsitems.commands;
+package fr.zekoyu.magneticitems.commands;
 
 import java.util.ArrayList;
 import java.util.Arrays;

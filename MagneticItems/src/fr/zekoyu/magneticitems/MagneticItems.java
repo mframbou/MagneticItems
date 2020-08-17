@@ -12,8 +12,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.tchrisofferson.configupdater.ConfigUpdater;
 
-import fr.zekoyu.magneticsitems.commands.MagneticItemsCommand;
-import fr.zekoyu.magneticsitems.commands.MagneticItemsTabCompleter;
+import fr.zekoyu.magneticitems.commands.MagneticItemsCommand;
+import fr.zekoyu.magneticitems.commands.MagneticItemsTabCompleter;
 
 public class MagneticItems extends JavaPlugin{
 	

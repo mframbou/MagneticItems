@@ -1,4 +1,4 @@
-package fr.zekoyu.magneticsitems.commands;
+package fr.zekoyu.magneticitems.commands;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
