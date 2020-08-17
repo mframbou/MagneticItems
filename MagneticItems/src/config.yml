@@ -1,0 +1,39 @@
+magnetism:
+  # Please note that float values are allowed everywhere, for example if you want a radius of 7.5 or a strength of 1.125, it is totally possible
+  
+  # Changes the attractive force of player on items, this DOES NOT change the radius, check the radius parameter for this (default 1)
+  strength: 1
+  
+  # Toggle the inversion of the magnetism (the items will be repulsed by the player)
+  reverse: false
+  
+  # The radius of a sphere around the player, if an item is in this sphere, it will be attracted by the player (default 7)
+  radius: 7
+  
+  # This parameter changes the acceleration curve of the item depending on the distance to player, but be aware that this DOES NOT change the final speed of the item, check strength for this.
+  # The closest this parameter is to 0, the flatter the acceleration curve is, this means that the item will always go at same speed if set to 0, and if set to a high value (for instance 100)
+  # the item will go slowly when far, and then at the end accelerate very fast (default 25)
+  acceleration: 25
+  
+  # Minimum speed of item, so that it isn't stopped when at max range, it's a relative value, it does not refers to block distance or anything (default 2)
+  minimum_speed: 2
+
+
+# If the item is going in the opposite direction from the player (for example if it's thrown on ice), these setings allow you to change the "force" at which they go back, default values
+# are set to be smooth, but you can make them do sharp turn back by increasing the values. (the more you decrease the value, the more the item keeps it velocity)
+
+# There are different values for each "special" block, so you can change values when the item is in water for instance
+
+smoothness:
+  # Water (default: 0.35)
+  water: 0.35 
+  
+  # Icy blocks, includes ice, packed ice and blue ice (default: 2)
+  ice: 2
+  
+  # Any other block (default: 0.2)
+  other: 0.2 
+  
+aesthetic:
+  # Choose between the short [MI] and the long [MagneticItems] when using /magneticitems (default: long)
+  prefix_type: long

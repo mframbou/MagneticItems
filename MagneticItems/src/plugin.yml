@@ -1,0 +1,9 @@
+name: MagneticItems
+version: 1.0
+author: Zekoyu
+main: fr.zekoyu.magneticitems.MagneticItems
+api-version: 1.13
+commands:
+  magneticitems:
+    description: Manage the MagneticItems plugin
+    permission: magneticitems.manage
