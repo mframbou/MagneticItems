@@ -1,0 +1,5 @@
+Changelog:
+
+V 1.1:
+        - Added 1.8-1.12 support
+        - Removed repetitive code
