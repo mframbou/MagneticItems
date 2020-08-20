@@ -14,6 +14,8 @@ public class MagneticItemsTabCompleter implements TabCompleter {
 	private final List<String> COMPLETIONS = Arrays.asList("reload", "set");
 	private final List<String> SET_COMPLETIONS = Arrays.asList("strength", "reverse", "radius", "acceleration", "minimum_speed", "smoothness", "prefix_type");
 	private final List<String> SMOOTHNESS_COMPLETIONS = Arrays.asList("water", "ice", "other");
+	private final List<String> PREFIX_TYPE_COMPLETIONS = Arrays.asList("long", "short");
+	private final List<String> BOOLEAN_COMPLETIONS = Arrays.asList("true", "false");
 	
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
@@ -30,8 +32,13 @@ public class MagneticItemsTabCompleter implements TabCompleter {
 						return StringUtil.copyPartialMatches(args[1], SET_COMPLETIONS , new ArrayList<>());
 				}
 			case 3:
-				if(args[1].toLowerCase().equals("smoothness")) {
-					return StringUtil.copyPartialMatches(args[2], SMOOTHNESS_COMPLETIONS , new ArrayList<>());
+				switch(args[1].toLowerCase()) {
+					case "smoothness":
+						return StringUtil.copyPartialMatches(args[2], SMOOTHNESS_COMPLETIONS , new ArrayList<>());
+					case "prefix_type":
+						return StringUtil.copyPartialMatches(args[2], PREFIX_TYPE_COMPLETIONS, new ArrayList<>());
+					case "reverse":
+						return StringUtil.copyPartialMatches(args[2], BOOLEAN_COMPLETIONS, new ArrayList<>());
 				}
 		}
 

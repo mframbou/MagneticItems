@@ -25,6 +25,8 @@ public class MagneticItems extends JavaPlugin{
 	@Override
 	public void onEnable() {
 		
+		String version = Bukkit.getBukkitVersion().split("-")[0];
+		
 		System.out.println(consolePrefix + " Loading config");
 		
 		this.saveDefaultConfig();
@@ -54,8 +56,15 @@ public class MagneticItems extends JavaPlugin{
 		
 		System.out.println(consolePrefix + " Registering events");
 		
-		itemsTickUpdate = new ItemsTickUpdate(this);
-		
+		if(version.startsWith("1.8") || version.startsWith("1.9") || version.startsWith("1.10") || version.startsWith("1.11") || version.startsWith("1.12")) {
+			itemsTickUpdate = new ItemsTickUpdate_1_8(this);
+		} else if(version.startsWith("1.13") || version.startsWith("1.14") || version.startsWith("1.15") || version.startsWith("1.16")) {
+			itemsTickUpdate = new ItemsTickUpdate_1_13(this);
+		} else {
+			itemsTickUpdate = null;
+			getLogger().severe(this.consolePrefix + " Your server version is not compatible with this plugin ! (1.8-1.16.x)");
+		}
+				
 		System.out.println(consolePrefix + " Started succesfully");
 		
 	}

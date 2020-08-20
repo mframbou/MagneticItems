@@ -5,6 +5,9 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
 import fr.zekoyu.magneticitems.MagneticItems;
+import fr.zekoyu.magneticitems.constants.CommandMessages;
+import fr.zekoyu.magneticitems.constants.ConfigPaths;
+import fr.zekoyu.magneticitems.constants.Permissions;
 
 
 public class MagneticItemsCommand implements CommandExecutor {
@@ -18,173 +21,189 @@ public class MagneticItemsCommand implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		
-		if(!sender.hasPermission("magneticitems.manage")) return false;
+		int argsLength = args.length;
 		
-		if(args[0] == null) return false;
+		if(!sender.hasPermission(Permissions.MANAGE_PERMISSION)) return true;
+		
+		if(argsLength == 0) {
+			sendWrongSyntaxMsg(sender, CommandMessages.DEFAULT_SYNTAX);
+			return true;
+		}
+		
 		switch(args[0].toLowerCase()) {
+		
 			case "reload":
 				main.updateConfig();
-				sender.sendMessage(main.getCommandPrefix() + " Configuration successfully reloaded !");
+				sender.sendMessage(main.getCommandPrefix() + " Configuration succesfully reloaded !");
 				break;
 				
 			case "set":
-				if(args.length > 2) {
-					String arg = args[2];
-					switch(args[1].toLowerCase()) {
-						case "strength":
+				if(argsLength < 2) sendWrongSyntaxMsg(sender, CommandMessages.SET_SYNTAX);		
+				
+				switch(args[1]) {
+					case "strength":
+						if(argsLength < 3) {
+							sendWrongSyntaxMsg(sender, CommandMessages.STRENGTH_SYNTAX);
+						} else {
+							String arg = args[2];
 							if(!isValidDouble(arg)) {
-								sendInvalidDoubleMessage(args[1], sender);
-							} else {
-								main.getConfig().set("magnetism.strength", Double.parseDouble(arg));
-								main.saveConfig();
-								main.updateConfig();
-								sender.sendMessage(main.getCommandPrefix() + " Magnetism strength has been set to §e" + arg + "§a (default 1)");
+								sendWrongSyntaxMsg(sender, CommandMessages.STRENGTH_SYNTAX);
+								return true;
 							}
-							break;
-							
-						case "reverse": 
+							setConfigValue(ConfigPaths.STRENGTH_PATH, Double.parseDouble(arg));
+							sender.sendMessage(main.getCommandPrefix() + " Magnetism strength has been changed to §e" + arg + "§a (default 1)");
+						}
+						break;
+						
+					case "reverse":
+						if(argsLength < 3) {
+							sendWrongSyntaxMsg(sender, CommandMessages.REVERSE_SYNTAX);
+						} else {
+							String arg = args[2];
 							if(!isValidBoolean(arg)) {
-								sendInvalidBoolMessage(args[1], sender);
-							} else {
-								main.getConfig().set("magnetism.reverse", Boolean.parseBoolean(arg));
-								main.saveConfig();
-								main.updateConfig();
-								if(Boolean.parseBoolean(arg) == true) {
-									sender.sendMessage(main.getCommandPrefix() + " Items will now be repulsed from players");
-								} else {
-									sender.sendMessage(main.getCommandPrefix() + " Items will now be attracted by players");
-								}
+								sendWrongSyntaxMsg(sender, CommandMessages.REVERSE_SYNTAX);
+								return true;
 							}
-							break;
-							
-						case "radius":
+							setConfigValue(ConfigPaths.REVERSE_PATH, Boolean.parseBoolean(arg));
+							if(Boolean.parseBoolean(arg) == true) {
+								sender.sendMessage(main.getCommandPrefix() + " Items will now be repulsed by players");
+							} else {
+								sender.sendMessage(main.getCommandPrefix() + " Items will now be attracted by players");
+							}
+						}
+						break;
+						
+					case "radius":
+						if(argsLength < 3) {
+							sendWrongSyntaxMsg(sender, CommandMessages.RADIUS_SYNTAX);
+						} else {
+							String arg = args[2];
 							if(!isValidDouble(arg)) {
-								sendInvalidDoubleMessage(args[1], sender);
-							} else {
-								main.getConfig().set("magnetism.radius", Double.parseDouble(arg));
-								main.saveConfig();
-								main.updateConfig();
-								sender.sendMessage(main.getCommandPrefix() + " Magnetism radius has been set to §e" + arg + "§a (default 7)");
+								sendWrongSyntaxMsg(sender, CommandMessages.RADIUS_SYNTAX);
+								return true;
 							}
-							break;
-							
-						case "acceleration":
+							setConfigValue(ConfigPaths.RADIUS_PATH, Double.parseDouble(arg));
+							sender.sendMessage(main.getCommandPrefix() + " Magnetism radius has been changed to §e" + arg + "§a (default 7)");
+						}
+						break;
+						
+					case "acceleration":
+						if(argsLength < 3) {
+							sendWrongSyntaxMsg(sender, CommandMessages.ACCELERATION_SYNTAX);
+						} else {
+							String arg = args[2];
 							if(!isValidDouble(arg)) {
-								sendInvalidDoubleMessage(args[1], sender);
-							} else {
-								main.getConfig().set("magnetism.acceleration", Double.parseDouble(arg));
-								main.saveConfig();
-								main.updateConfig();
-								sender.sendMessage(main.getCommandPrefix() + " Magnetism acceleration has been set to §e" + arg + "§a (default 25)");
+								sendWrongSyntaxMsg(sender, CommandMessages.ACCELERATION_SYNTAX);
+								return true;
 							}
-							break;
-							
-						case "minimum_speed":
+							setConfigValue(ConfigPaths.ACCELERATION_PATH, Double.parseDouble(arg));
+							sender.sendMessage(main.getCommandPrefix() + " Magnetism acceleration has been changed to §e" + arg + "§a (default 25)");
+						}
+						break;
+						
+					case "minimum_speed":
+						if(argsLength < 3) {
+							sendWrongSyntaxMsg(sender, CommandMessages.MINIMUM_SPEED_SYNTAX);
+						} else {
+							String arg = args[2];
 							if(!isValidDouble(arg)) {
-								sendInvalidDoubleMessage(args[1], sender);
-							} else {
-								main.getConfig().set("magnetism.minimum_speed", Double.parseDouble(arg));
-								main.saveConfig();
-								main.updateConfig();
-								sender.sendMessage(main.getCommandPrefix() + " Magnetism minimum speed has been set to §e" + arg + "§a (default 2)");
+								sendWrongSyntaxMsg(sender, CommandMessages.MINIMUM_SPEED_SYNTAX);
+								return true;
 							}
-							
-						case "prefix_type":
+							setConfigValue(ConfigPaths.MINIMUM_SPEED_PATH, Double.parseDouble(arg));
+							sender.sendMessage(main.getCommandPrefix() + " Magnetism minimum speed has been changed to §e" + arg + "§a (default 2)");
+						}
+						break;
+						
+					case "prefix_type":
+						if(argsLength < 3) {
+							sendWrongSyntaxMsg(sender, CommandMessages.PREFIX_TYPE_SYNTAX);
+						} else {
+							String arg = args[2];
 							switch(arg.toLowerCase()) {
 								case "long":
-									main.getConfig().set("aesthetic.prefix_type", "long");
-									main.saveConfig();
-									main.updateConfig();
-									sender.sendMessage(main.getCommandPrefix() + " < Prefix has been changed to long");
+									setConfigValue(ConfigPaths.PREFIX_TYPE_PATH, "long");
+									sender.sendMessage(main.getCommandPrefix() + " < Prefix type has been changed to long");
 									break;
 								case "short":
-									main.getConfig().set("aesthetic.prefix_type", "short");
-									main.saveConfig();
-									main.updateConfig();
+									setConfigValue(ConfigPaths.PREFIX_TYPE_PATH, "short");
 									sender.sendMessage(main.getCommandPrefix() + " < Prefix type has been changed to short");
 									break;
 								default:
-									sender.sendMessage(main.getCommandPrefix() + " Invalid syntax: /magneticitems set prefix_type <long | short>");
+									sendWrongSyntaxMsg(sender, CommandMessages.PREFIX_TYPE_SYNTAX);
 									break;
 							}
-							break;
+						}
+						break;
+						
+					case "smoothness":
+						if(argsLength < 4) {
+							sendWrongSyntaxMsg(sender, CommandMessages.SMOOTHNESS_SYNTAX);
+						} else {
+							String number = args[3];
+							switch(args[2].toLowerCase()) {
 							
-						case "smoothness":
-							if(args.length > 2) {
-								String numArg = "";
-								if(args.length > 3) numArg = args[3];
-								switch(args[2].toLowerCase()) {
-									case "water":
-										if(args.length > 3) {
-											if(isValidDouble(numArg)) {
-												main.getConfig().set("smoothness.water", Double.parseDouble(numArg));
-												main.saveConfig();
-												main.updateConfig();
-												sender.sendMessage(main.getCommandPrefix() + " Water smoothness has been set to §e" + numArg + "§a (default 0.35)" );
-												break;
-											}
-										}
-										sender.sendMessage(main.getCommandPrefix() + " Invalid syntax: /magneticitems set smoothness water <number>");
-										break;
-										
-									case"ice":
-										if(args.length > 3) {
-											if(isValidDouble(numArg)) {
-												main.getConfig().set("smoothness.ice", Double.parseDouble(numArg));
-												main.saveConfig();
-												main.updateConfig();
-												sender.sendMessage(main.getCommandPrefix() + " Ice smoothness has been set to §e" + numArg + "§a (default 2)" );
-												break;
-											}
-										}
-										sender.sendMessage(main.getCommandPrefix() + " Invalid syntax: /magneticitems set smoothness ice <number>");
-										break;
-										
-									case"other":
-										if(args.length > 3) {
-											if(isValidDouble(numArg)) {
-												main.getConfig().set("smoothness.other", Double.parseDouble(numArg));
-												main.saveConfig();
-												main.updateConfig();
-												sender.sendMessage(main.getCommandPrefix() + " Other blocks smoothness has been set to §e" + numArg + "§a (default 0.2)" );
-												break;
-											}
-										}
-										sender.sendMessage(main.getCommandPrefix() + " Invalid syntax: /magneticitems set smoothness other <number>");
-										break;
-										
-									default:
-										sender.sendMessage(main.getCommandPrefix() + " Invalid syntax: /magneticitems set smoothness <water | ice | other> <number>");
-										break;
-								}
-							} else {
-								sender.sendMessage(main.getCommandPrefix() + " Invalid syntax: /magneticitems set smoothness <water | ice | other> <number>");
+								case "ice":
+									if(!isValidDouble(number)) {
+										sendWrongSyntaxMsg(sender, CommandMessages.SMOOTHNESS_SYNTAX);
+										return true;
+									} 
+									setConfigValue(ConfigPaths.ICE_SMOOTHNESS_PATH, Double.parseDouble(number));
+									sender.sendMessage(main.getCommandPrefix() + " Ice smoothness has been changed to §e" + number + "§a (default 2)");
+									break;
+									
+								case "water":
+									if(!isValidDouble(number)) {
+										sendWrongSyntaxMsg(sender, CommandMessages.SMOOTHNESS_SYNTAX);
+										return true;
+									}
+									setConfigValue(ConfigPaths.WATER_SMOOTHNESS_PATH, Double.parseDouble(number));
+									sender.sendMessage(main.getCommandPrefix() + " Water smoothness has been changed to §e" + number + "§a (default 0.35)");
+									break;
+									
+								case "other":
+									if(!isValidDouble(number)) {
+										sendWrongSyntaxMsg(sender, CommandMessages.SMOOTHNESS_SYNTAX);
+										return true;
+									} 
+									setConfigValue(ConfigPaths.OTHER_SMOOTHNESS_PATH, Double.parseDouble(number));
+									sender.sendMessage(main.getCommandPrefix() + " Other blocks smoothness has been changed to §e" + number + "§a (default 0.2)");
+									break;
+									
+								default:
+									sendWrongSyntaxMsg(sender, CommandMessages.SMOOTHNESS_SYNTAX);
+									break;
+							
 							}
-							break;
-							
-						default:
-							sender.sendMessage(main.getCommandPrefix() + " Invalid syntax: /magneticitems set <param> <param>");
-							break;
-					}
-				} else {
-					if(args[1].equalsIgnoreCase("smoothness")) {
-						sender.sendMessage(main.getCommandPrefix() + " Invalid syntax: /magneticitems set smoothness <water | ice | other> <number>");
-					} else {
-						sender.sendMessage(main.getCommandPrefix() + " Invalid syntax: /magneticitems set <param> <param>");
-					}
-				}
+						}
+						break;
+						
+					default:
+						sendWrongSyntaxMsg(sender, CommandMessages.SET_SYNTAX);
+						break;
+				}	
+				break;	// case "set"
 				
-	}
+			default:
+				sendWrongSyntaxMsg(sender, CommandMessages.DEFAULT_SYNTAX);
+				break;
+		}
 		
-		return false;
+		return true;
 	}
 	
-		
-	public void sendInvalidBoolMessage(String cmd, CommandSender sender) {
-		sender.sendMessage(main.getCommandPrefix() + " Invalid syntax: /magneticitems set " + cmd + " <true | false>");
+	private void setConfigValue(String path, Object value) {
+		main.getConfig().set(path, value);
+		main.saveConfig();
+		main.updateConfig();
 	}
 	
-	public boolean isValidBoolean(String string) {
+	private void sendWrongSyntaxMsg(CommandSender sender, String message) {
+		sender.sendMessage(main.getCommandPrefix() + " " + message);
+	}
+
+	
+	private boolean isValidBoolean(String string) {
 		if(string.equalsIgnoreCase("true") || string.equalsIgnoreCase("false")) {
 			return true;
 		} else {
@@ -192,11 +211,8 @@ public class MagneticItemsCommand implements CommandExecutor {
 		}
 	}
 	
-	public void sendInvalidDoubleMessage(String cmd, CommandSender sender) {
-		sender.sendMessage(main.getCommandPrefix() + " Invalid syntax: /magneticitems set " + cmd + " <number>");
-	}
 	
-	public boolean isValidDouble(String string) {
+	private boolean isValidDouble(String string) {
 		try {
 			Double.parseDouble(string);
 			return true;
