@@ -2,8 +2,18 @@ name: MagneticItems
 version: 1.0
 author: Zekoyu
 main: fr.zekoyu.magneticitems.MagneticItems
+description: A plugin that makes items attracted by players
+load: POSTWORLD
 api-version: 1.13
+
 commands:
   magneticitems:
     description: Manage the MagneticItems plugin
     permission: magneticitems.manage
+    
+permissions:
+  magneticitems.use:
+    description: Allow player to attract or repulse items
+  magneticitems.manage:
+    description: Allow user to manage the plugin using the /magneticitems <parameters> command
+    
