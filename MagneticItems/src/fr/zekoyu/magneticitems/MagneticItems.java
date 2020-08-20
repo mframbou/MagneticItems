@@ -27,7 +27,7 @@ public class MagneticItems extends JavaPlugin{
 		
 		String version = Bukkit.getBukkitVersion().split("-")[0];
 		
-		System.out.println(consolePrefix + " Loading config");
+		this.getLogger().info(consolePrefix + " Loading config");
 		
 		this.saveDefaultConfig();
 		switch(getConfig().getString("aesthetic.prefix_type").toLowerCase()) {
@@ -46,7 +46,7 @@ public class MagneticItems extends JavaPlugin{
 		getCommand("magneticitems").setExecutor(new MagneticItemsCommand(this));
 		getCommand("magneticitems").setTabCompleter(new MagneticItemsTabCompleter());
 
-		System.out.println(consolePrefix + " Loading items");
+		this.getLogger().info(consolePrefix + " Loading items");
 		
 		for (World world : Bukkit.getWorlds()) {
 			for(Item item : world.getEntitiesByClass(Item.class)) {
@@ -54,7 +54,7 @@ public class MagneticItems extends JavaPlugin{
 			}
 		}
 		
-		System.out.println(consolePrefix + " Registering events");
+		this.getLogger().info(consolePrefix + " Registering events");
 		
 		if(version.startsWith("1.8") || version.startsWith("1.9") || version.startsWith("1.10") || version.startsWith("1.11") || version.startsWith("1.12")) {
 			itemsTickUpdate = new ItemsTickUpdate_1_8(this);
@@ -65,7 +65,7 @@ public class MagneticItems extends JavaPlugin{
 			getLogger().severe(this.consolePrefix + " Your server version is not compatible with this plugin ! (1.8-1.16.x)");
 		}
 				
-		System.out.println(consolePrefix + " Started succesfully");
+		this.getLogger().info(consolePrefix + " Started succesfully");
 		
 	}
 	
@@ -80,7 +80,7 @@ public class MagneticItems extends JavaPlugin{
 		try {
 			ConfigUpdater.update(this, "config.yml", configFile, Arrays.asList("none"));
 		} catch (IOException e) {
-			System.out.println(consolePrefix + " Error while loading config file:");
+			this.getLogger().info(consolePrefix + " Error while loading config file:");
 			e.printStackTrace();
 		}
 		reloadConfig();
